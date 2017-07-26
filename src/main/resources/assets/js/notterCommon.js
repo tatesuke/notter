@@ -78,6 +78,11 @@ com.tatesuke.notter.notterApp = angular.module('notterApp', []);
 			},
 			controller: ["$scope", "$sce" ,function($scope, $sce){
 				$scope.render = function(value) {
+					marked.setOptions({
+						renderer: new marked.Renderer(),
+						breaks: true,
+						sanitize: true,
+					});
 					let html = marked(value);
 					return $sce.trustAsHtml(html);
 				}
