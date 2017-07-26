@@ -25,32 +25,33 @@
 		</form>
 	</div>
 	
-	<!-- クイックフィルタ
 	<div class="quick_filter">
-		<input type="checkbox" id="starFilterButton" /><label for="starFilterButton">★</label>
-		<input type="checkbox" id="badFilterButton" /><label for="badFilterButton">△</label>
+		<i class="button fa" ng-class="{'fa-star-o':!vm.filters.starOnly, 'fa-star':vm.filters.starOnly}" ng-click="vm.toggleStarOnly()"></i>
+		<i class="button fa" ng-class="{'fa-thumbs-o-down':vm.filters.hideBads, 'fa-thumbs-down':!vm.filters.hideBads}" ng-click="vm.toggleHideBads()"></i>
 	</div>
-	-->
 </div>
 
 <!-- ノートリスト -->
 <div class="note_list">
-	<div class="note" ng-repeat="note in vm.notes | filter : vm.noteFilter | orderBy : 'id': true">
-		<div class="left">
-			<i class="button fa" ng-class="{'fa-star-o':!vm.hasTag(note, 'star'), 'fa-star':vm.hasTag(note, 'star')}" ng-click="vm.toggleTag(note, 'star')"></i>
-			<i class="button fa" ng-class="{'fa-thumbs-o-down':!vm.hasTag(note, 'bad'), 'fa-thumbs-down':vm.hasTag(note, 'bad')}" ng-click="vm.toggleTag(note, 'bad')"></i>
-			<i class="button fa fa-reply" ng-click="vm.replyTo(note)"></i>
-		</div>
-		<div class="center">
-			<div><markdown value="note.text"></markdown></div>
-			<div class="meta_info">
-				id:{{note.id}}<span ng-if="note.replyFrom &amp;&amp; note.replyFrom.length != 0">(<i class="fa fa-twitch"></i>)</span><br />
-				tags: <span ng-repeat="tag in note.tags">{{tag.text}}<i class="button fa fa-times" ng-click="vm.toggleTag(note, tag.text)"></i> </span><i class="button fa fa-plus-square-o" ng-click="vm.addTag(note)"></i><br />
-				created:<time>{{note.createDate | date: 'yyyy/MM/dd HH:mm:ss'}}</time>
+	<div ng-repeat="note in vm.notes | orderBy : 'id': true"
+			ng-if="!(note.isDeleted || (vm.filters.starOnly &amp;&amp; !vm.hasTag(note, 'star')) || (vm.filters.hideBads &amp;&amp; vm.hasTag(note, 'bad')))">
+		<div class="note">
+			<div class="left">
+				<i class="button fa" ng-class="{'fa-star-o':!vm.hasTag(note, 'star'), 'fa-star':vm.hasTag(note, 'star')}" ng-click="vm.toggleTag(note, 'star')"></i>
+				<i class="button fa" ng-class="{'fa-thumbs-o-down':!vm.hasTag(note, 'bad'), 'fa-thumbs-down':vm.hasTag(note, 'bad')}" ng-click="vm.toggleTag(note, 'bad')"></i>
+				<i class="button fa fa-reply" ng-click="vm.replyTo(note)"></i>
 			</div>
-		</div>
-		<div class="right">
-			<i class="button fa fa-times" ng-click="vm.remove(note)"></i>
+			<div class="center">
+				<div><markdown value="note.text"></markdown></div>
+				<div class="meta_info">
+					id:{{note.id}}<span ng-if="note.replyFrom &amp;&amp; note.replyFrom.length != 0">(<i class="fa fa-twitch"></i>)</span><br />
+					tags: <span ng-repeat="tag in note.tags">{{tag.text}}<i class="button fa fa-times" ng-click="vm.toggleTag(note, tag.text)"></i> </span><i class="button fa fa-plus-square-o" ng-click="vm.addTag(note)"></i><br />
+					created:<time>{{note.createDate | date: 'yyyy/MM/dd HH:mm:ss'}}</time>
+				</div>
+			</div>
+			<div class="right">
+				<i class="button fa fa-times" ng-click="vm.remove(note)"></i>
+			</div>
 		</div>
 	</div>
 </div>

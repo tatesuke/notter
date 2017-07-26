@@ -6,6 +6,10 @@
 		this.newText = "";
 		this.newTags = "";
 		this.notes = [];
+		this.filters = {
+			starOnly:false,
+			hideBads:false
+		};
 		
 		this.constructor = function() {
 			let that = this;
@@ -58,6 +62,15 @@
 			this.newText = this.newText + "[" + note.id + "]";
 		}
 		
+		this.toggleStarOnly = function() {
+			this.filters.starOnly = !this.filters.starOnly;
+			console.log("toggle star");
+		}
+		
+		this.toggleHideBads = function() {
+			this.filters.hideBads = !this.filters.hideBads;
+		}
+		
 		this.hasTag = function (note, tag) {
 			if (!note.tags) {
 				return false;
@@ -103,8 +116,13 @@
 			});
 		}
 		
-		this.noteFilter = function(note) {
-			return !note.isDeleted;
+		this.getYyyyMmDd = function(timeLong) {
+			let date = new Date(timeLong);
+			let yyyy = (date.getFullYear()).toString();
+			let mm = (date.getMonth() + 1).toString();
+			let dd = date.getDate().toString();
+			console.log(yyyy + mm + dd);
+			return yyyy + mm + dd;
 		}
 		
 		this._updateNotes = function(notes) {
