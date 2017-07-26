@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{'/webjars/font-awesome/4.7.0/css/font-awesome.css'}" />
+	<link rel="stylesheet" type="text/css" th:href="@{'/static/assets/css/index.css'}" />
+	
+	<script th:src="@{/webjars/angularjs/1.6.4/angular.js}"></script>
+	<script th:src="@{/webjars/marked/0.3.2/marked.js}"></script>
+	<script th:src="@{'/static/assets/js/notterCommon.js'}"></script>
+	<script th:src="@{'/static/assets/js/index.js'}"></script>
+	
+	<title>Test</title>
+</head>
+
+<body ng-app="notterApp" ng-controller="indexController as vm">
+
+<div class="console">
+	<!-- 新規フォーム -->
+	<div class="new_form">
+		<form ng-submit="vm.add()" ng-disabled="vm.newFormDisabled">
+			<textarea name="text" ng-model="vm.newText" ng-keydown="vm.onKeyDown($event)"></textarea>
+			<input type="text" name="tags" ng-model="vm.newTags" />
+			<input type="submit" />
+		</form>
+	</div>
+	
+	<!-- クイックフィルタ
+	<div class="quick_filter">
+		<input type="checkbox" id="starFilterButton" /><label for="starFilterButton">★</label>
+		<input type="checkbox" id="badFilterButton" /><label for="badFilterButton">△</label>
+	</div>
+	-->
+</div>
+
+<!-- ノートリスト -->
+<div class="note_list">
+	<div class="note" ng-repeat="note in vm.notes | filter : vm.noteFilter | orderBy : 'id': true">
+		<div class="left">
+			<i class="button fa" ng-class="{'fa-star-o':!vm.hasTag(note, 'star'), 'fa-star':vm.hasTag(note, 'star')}" ng-click="vm.toggleTag(note, 'star')"></i>
+			<i class="button fa" ng-class="{'fa-thumbs-o-down':!vm.hasTag(note, 'bad'), 'fa-thumbs-down':vm.hasTag(note, 'bad')}" ng-click="vm.toggleTag(note, 'bad')"></i>
+			<i class="button fa fa-reply" ng-click="vm.replyTo(note)"></i>
+		</div>
+		<div class="center">
+			<div><markdown value="note.text"></markdown></div>
+			<div class="meta_info">
+				id:{{note.id}}<span ng-if="note.replyFrom &amp;&amp; note.replyFrom.length != 0">(<i class="fa fa-twitch"></i>)</span><br />
+				tags: <span ng-repeat="tag in note.tags">{{tag.text}}<i class="button fa fa-times" ng-click="vm.toggleTag(note, tag.text)"></i> </span><i class="button fa fa-plus-square-o" ng-click="vm.addTag(note)"></i><br />
+				created:<time>{{note.createDate | date: 'yyyy/MM/dd HH:mm:ss'}}</time>
+			</div>
+		</div>
+		<div class="right">
+			<i class="button fa fa-times" ng-click="vm.remove(note)"></i>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

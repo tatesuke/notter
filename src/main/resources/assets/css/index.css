@@ -1,0 +1,63 @@
+/* 新規フォーム */
+.new_form textarea[name="text"] {
+	display : block;
+	width : 700px;
+	height: 100px;
+}
+
+.new_form input[name="tags"] {
+	width : calc(700px - 50px);
+}
+
+.new_form input[type="submit"] {
+	width: 45px;
+}
+
+/* ノートリスト */
+
+.note {
+	border-top : 1px solid gray;
+	padding : 5px 0px;
+}
+
+.note .left {
+	float:left;
+}
+.note .center {
+	float:left;
+	margin-left: 20px;
+}
+.note .right {
+	float:right;
+}
+
+.note .left .button{
+	display:block;
+}
+
+.note:after {
+	content: "."; 
+	display: block; 
+	height: 0; 
+	font-size:0;	
+	clear: both; 
+	visibility:hidden;
+}
+
+.note .button.fa-star {
+	color : gold;
+}
+
+.note .meta_info {
+	font-size:small;
+	color:gray;
+}
+
+.note .meta_info .tags {
+	display: inline-block;
+}
+
+.note .button:hover {
+	cursor: pointer;
+}
+
